@@ -103,7 +103,7 @@ export default function CalculatorPage() {
   const isConnected = true; // You could add actual connection status checking
 
   return (
-    <div className="min-h-screen bg-slate-50 p-4 pt-[0px] pb-[0px] pl-[0px] pr-[0px]">
+    <div className="min-h-screen bg-slate-50 p-4">
       <div className="h-[calc(100vh-2rem)] grid grid-cols-1 lg:grid-cols-2 gap-4">
         
         {/* Calculator Section - Left Half */}
@@ -115,34 +115,30 @@ export default function CalculatorPage() {
         </div>
 
         {/* Right Side Container - Split into top and bottom */}
-        <div className="flex flex-col gap-4 pr-8">
+        <div className="flex flex-col pr-8 h-full">
           
-          {/* AI Comment Box - Top Right - Shorter */}
-          <div className="h-[35%]">
-            <div className="h-full max-h-[200px]">
-              <AiCommentBox
-                comments={comments}
-                isTyping={calculateMutation.isPending}
-                currentMood={currentMood}
-                currentActivity={currentActivity}
-                isConnected={isConnected}
-              />
-            </div>
+          {/* AI Comment Box - Top Right */}
+          <div className="flex-1 mb-4">
+            <AiCommentBox
+              comments={comments}
+              isTyping={calculateMutation.isPending}
+              currentMood={currentMood}
+              currentActivity={currentActivity}
+              isConnected={isConnected}
+            />
           </div>
 
-          {/* Character Display - Bottom Right - Taller */}
-          <div className="h-[65%] pt-[80px] pb-[80px] pl-[-87px] pr-[-87px]">
-            <div className="h-full max-h-[350px]">
-              <CharacterDisplay
-                currentGif={currentGif}
-                currentMood={currentMood}
-                isBusy={isBusy}
-                environment={currentEnvironment}
-                responseCount={responseCount}
-                speechBubbleText={speechBubbleText}
-                showSpeechBubble={showSpeechBubble}
-              />
-            </div>
+          {/* Character Display - Bottom Right */}
+          <div className="flex-[2]">
+            <CharacterDisplay
+              currentGif={currentGif}
+              currentMood={currentMood}
+              isBusy={isBusy}
+              environment={currentEnvironment}
+              responseCount={responseCount}
+              speechBubbleText={speechBubbleText}
+              showSpeechBubble={showSpeechBubble}
+            />
           </div>
         </div>
       </div>
