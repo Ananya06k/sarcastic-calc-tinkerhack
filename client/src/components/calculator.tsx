@@ -43,7 +43,7 @@ export function Calculator({ onCalculation, isLoading }: CalculatorProps) {
       { label: '1', onClick: () => inputNumber('1'), className: 'bg-slate-100 hover:bg-slate-200 text-slate-800' },
       { label: '2', onClick: () => inputNumber('2'), className: 'bg-slate-100 hover:bg-slate-200 text-slate-800' },
       { label: '3', onClick: () => inputNumber('3'), className: 'bg-slate-100 hover:bg-slate-200 text-slate-800' },
-      { label: '+', onClick: () => performOperation('+'), className: 'bg-blue-600 hover:bg-blue-700 text-white row-span-2', span: 2 },
+      { label: '+', onClick: () => performOperation('+'), className: 'bg-blue-600 hover:bg-blue-700 text-white' },
     ],
     [
       { label: '0', onClick: () => inputNumber('0'), className: 'bg-slate-100 hover:bg-slate-200 text-slate-800 col-span-2', span: 2 },
@@ -55,8 +55,8 @@ export function Calculator({ onCalculation, isLoading }: CalculatorProps) {
   const previousOperation = state.previousValue && state.operation ? `${state.previousValue} ${state.operation}` : '';
 
   return (
-    <Card className="bg-white rounded-2xl shadow-xl h-full flex flex-col max-h-[600px]">
-      <CardHeader className="pb-2 py-3">
+    <Card className="bg-white rounded-2xl shadow-xl h-full flex flex-col max-h-[700px] w-full max-w-md">
+      <CardHeader className="pb-2 py-4">
         <div className="flex items-center justify-between">
           <h1 className="text-xl font-bold text-slate-800 flex items-center gap-2">
             <CalculatorIcon className="text-blue-600" />
@@ -68,27 +68,27 @@ export function Calculator({ onCalculation, isLoading }: CalculatorProps) {
         </div>
       </CardHeader>
 
-      <CardContent className="flex-1 flex flex-col gap-4">
+      <CardContent className="flex-1 flex flex-col gap-5">
         {/* Display */}
-        <div className="bg-slate-900 rounded-xl p-4">
+        <div className="bg-slate-900 rounded-xl p-5">
           <div className="text-right">
-            <div className="text-slate-400 text-sm font-mono mb-1 min-h-4">
+            <div className="text-slate-400 text-sm font-mono mb-1 min-h-5">
               {previousOperation}
             </div>
-            <div className="text-white text-3xl font-mono break-all">
+            <div className="text-white text-4xl font-mono break-all">
               {state.display}
             </div>
           </div>
         </div>
 
         {/* Button Grid */}
-        <div className="grid grid-cols-4 gap-2 flex-1">
+        <div className="grid grid-cols-4 gap-3 flex-1">
           {buttons.flat().map((button, index) => (
             <Button
               key={index}
               onClick={button.onClick}
               disabled={isLoading}
-              className={`h-12 rounded-xl font-semibold text-base transition-all duration-150 active:scale-95 shadow-sm hover:shadow-md ${button.className} ${
+              className={`h-16 rounded-xl font-semibold text-lg transition-all duration-150 active:scale-95 shadow-sm hover:shadow-md ${button.className} ${
                 button.span === 2 ? 'col-span-2' : ''
               }`}
             >
