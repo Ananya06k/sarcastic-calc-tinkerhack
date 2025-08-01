@@ -50,6 +50,7 @@ export default function CalculatorPage() {
   const [speechBubbleText, setSpeechBubbleText] = useState("");
   const [showSpeechBubble, setShowSpeechBubble] = useState(false);
   const [aiResult, setAiResult] = useState<string>("");
+  const [lastExpression, setLastExpression] = useState<string>("");
   const { toast } = useToast();
 
   // Get calculation history
@@ -94,6 +95,9 @@ export default function CalculatorPage() {
   });
 
   const handleCalculation = (expression: string) => {
+    // Store the complete expression for display
+    setLastExpression(expression);
+    
     // Show immediate feedback
     setSpeechBubbleText("*sigh*");
     setShowSpeechBubble(true);
@@ -102,8 +106,9 @@ export default function CalculatorPage() {
   };
 
   const handleNewInput = () => {
-    // Clear AI result when user starts new input
+    // Clear AI result and last expression when user starts new input
     setAiResult("");
+    setLastExpression("");
   };
 
   const responseCount = comments.length;
@@ -121,6 +126,7 @@ export default function CalculatorPage() {
             onNewInput={handleNewInput}
             isLoading={calculateMutation.isPending}
             aiResult={aiResult}
+            lastExpression={lastExpression}
           />
         </div>
 

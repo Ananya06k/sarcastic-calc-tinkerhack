@@ -8,9 +8,10 @@ interface CalculatorProps {
   onNewInput?: () => void; // Called when user starts new input
   isLoading?: boolean;
   aiResult?: string; // AI's result to display
+  lastExpression?: string; // The complete expression that was calculated
 }
 
-export function Calculator({ onCalculation, onNewInput, isLoading, aiResult }: CalculatorProps) {
+export function Calculator({ onCalculation, onNewInput, isLoading, aiResult, lastExpression }: CalculatorProps) {
   const { state, inputNumber, inputDecimal, clear, clearEntry, backspace, performOperation, performCalculation, getExpression } = useCalculator();
 
   const handleEquals = () => {
@@ -66,7 +67,9 @@ export function Calculator({ onCalculation, onNewInput, isLoading, aiResult }: C
     ],
   ];
 
-  const previousOperation = state.previousValue && state.operation ? `${state.previousValue} ${state.operation}` : '';
+  // Show complete expression when AI result is displayed, otherwise show current operation
+  const displayExpression = aiResult && lastExpression ? lastExpression : 
+    (state.previousValue && state.operation ? `${state.previousValue} ${state.operation}` : '');
 
   return (
     <Card className="bg-slate-900 rounded-2xl shadow-xl h-full flex flex-col max-h-[700px] w-full max-w-md border border-slate-700">
@@ -87,7 +90,7 @@ export function Calculator({ onCalculation, onNewInput, isLoading, aiResult }: C
         <div className="bg-slate-100 rounded-xl p-5 border border-slate-300">
           <div className="text-right">
             <div className="text-slate-600 text-sm font-mono mb-1 min-h-5">
-              {previousOperation}
+              {displayExpression}
             </div>
             <div className="text-slate-900 text-4xl font-mono break-all">
               {aiResult || state.display}
