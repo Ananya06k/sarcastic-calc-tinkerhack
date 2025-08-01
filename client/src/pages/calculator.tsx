@@ -107,7 +107,7 @@ export default function CalculatorPage() {
       <div className="h-[calc(100vh-2rem)] grid grid-cols-1 lg:grid-cols-2 gap-4">
         
         {/* Calculator Section - Left Half */}
-        <div className="flex pl-8">
+        <div className="flex items-center justify-center p-8">
           <Calculator 
             onCalculation={handleCalculation}
             isLoading={calculateMutation.isPending}
