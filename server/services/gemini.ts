@@ -1,26 +1,51 @@
+// server/services/gemini.ts
+import path from "path";
+import dotenv from "dotenv";
+import { fileURLToPath } from "url";
+
+// Ensure .env is loaded before we read process.env
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+// .env is in server/.env; this file is server/services/...
+dotenv.config({ path: path.join(__dirname, "..", ".env") });
+
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({ 
-  apiKey: process.env.GEMINI_API_KEY || process.env.GOOGLE_AI_API_KEY || "" 
-});
+const apiKey =
+  process.env.GOOGLE_API_KEY ||
+  process.env.GEMINI_API_KEY ||
+  process.env.GOOGLE_AI_API_KEY ||
+  "";
+
+if (!apiKey) {
+  throw new Error(
+    "Missing API key. Set GOOGLE_API_KEY (or GEMINI_API_KEY / GOOGLE_AI_API_KEY) in server/.env"
+  );
+}
+
+const ai = new GoogleGenAI({ apiKey });
 
 export interface SarcasticResponse {
   response: string;
-  emotion: 'sarcastic' | 'annoyed' | 'bored' | 'excited' | 'judgmental' | 'condescending';
+  emotion: "sarcastic" | "annoyed" | "bored" | "excited" | "judgmental" | "condescending";
   mood: string;
   activity: string;
   aiResult: string; // AI's answer to the calculation
 }
 
 export async function generateSarcasticResponse(
-  expression: string, 
-  result: string, 
-  calculationHistory: Array<{expression: string, result: string}>
+  expression: string,
+  result: string,
+  calculationHistory: Array<{ expression: string; result: string }>
 ): Promise<SarcasticResponse> {
   try {
-    const historyContext = calculationHistory.length > 0 
-      ? `Recent calculations: ${calculationHistory.slice(-3).map(h => `${h.expression} = ${h.result}`).join(', ')}`
-      : "This is the first calculation.";
+    const historyContext =
+      calculationHistory.length > 0
+        ? `Recent calculations: ${calculationHistory
+            .slice(-3)
+            .map((h) => `${h.expression} = ${h.result}`)
+            .join(", ")}`
+        : "This is the first calculation.";
 
     const systemPrompt = `You are a sarcastic AI calculator assistant. Your personality is witty, condescending, and slightly annoyed at having to do basic math. 
     
@@ -49,7 +74,7 @@ export async function generateSarcasticResponse(
     - activity: What the AI character is currently doing (be creative and fun)`;
 
     const response = await ai.models.generateContent({
-      model: "gemini-2.5-pro",
+      model: process.env.GEMINI_MODEL ?? "gemini-1.5-flash",
       config: {
         systemInstruction: systemPrompt,
         responseMimeType: "application/json",
@@ -58,35 +83,36 @@ export async function generateSarcasticResponse(
           properties: {
             aiResult: { type: "string" },
             response: { type: "string" },
-            emotion: { 
+            emotion: {
               type: "string",
-              enum: ["sarcastic", "annoyed", "bored", "excited", "judgmental", "condescending"]
+              enum: ["sarcastic", "annoyed", "bored", "excited", "judgmental", "condescending"],
             },
             mood: { type: "string" },
-            activity: { type: "string" }
+            activity: { type: "string" },
           },
-          required: ["aiResult", "response", "emotion", "mood", "activity"]
-        }
+          required: ["aiResult", "response", "emotion", "mood", "activity"],
+        },
       },
-      contents: `Calculate: ${expression}`
+      contents: `Calculate: ${expression}`,
     });
 
     const rawJson = response.text;
-    if (rawJson) {
+    if (!rawJson) throw new Error("Empty response from model");
+
+    try {
       const data: SarcasticResponse = JSON.parse(rawJson);
       return data;
-    } else {
-      throw new Error("Empty response from model");
+    } catch {
+      throw new Error("Model returned non-JSON content");
     }
   } catch (error) {
     console.error("Gemini API error:", error);
-    // Fallback response
     return {
       aiResult: "ERROR",
       response: "Well, that calculation broke my circuits. How delightfully incompetent! 🙄",
       emotion: "annoyed",
       mood: "Frustrated",
-      activity: "Contemplating the futility of existence"
+      activity: "Contemplating the futility of existence",
     };
   }
 }
@@ -94,26 +120,51 @@ export async function generateSarcasticResponse(
 export function getGifForEmotion(emotion: string): string {
   const gifMappings: Record<string, string> = {
     sarcastic: "🙄",
-    annoyed: "😤", 
+    annoyed: "😤",
     bored: "😴",
     excited: "🤖",
     judgmental: "🤨",
-    condescending: "😏"
+    condescending: "😏",
   };
-  
   return gifMappings[emotion] || "🤖";
 }
 
-export function getEnvironmentForMood(mood: string): { name: string, time: string, background: string } {
+export function getEnvironmentForMood(
+  mood: string
+): { name: string; time: string; background: string } {
   const environments = [
-    { name: "Office", time: "Working Hours", background: "https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600" },
-    { name: "Bedroom", time: "Rest Time", background: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600" },
-    { name: "Garden", time: "Fresh Air Break", background: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600" },
-    { name: "Living Room", time: "Leisure Time", background: "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600" },
-    { name: "Laboratory", time: "Research Mode", background: "https://images.unsplash.com/photo-1582719471384-894fbb16e074?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600" }
+    {
+      name: "Office",
+      time: "Working Hours",
+      background:
+        "https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600",
+    },
+    {
+      name: "Bedroom",
+      time: "Rest Time",
+      background:
+        "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600",
+    },
+    {
+      name: "Garden",
+      time: "Fresh Air Break",
+      background:
+        "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600",
+    },
+    {
+      name: "Living Room",
+      time: "Leisure Time",
+      background:
+        "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600",
+    },
+    {
+      name: "Laboratory",
+      time: "Research Mode",
+      background:
+        "https://images.unsplash.com/photo-1582719471384-894fbb16e074?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=600",
+    },
   ];
-  
-  // Simple hash-based selection for consistency
-  const index = Math.abs(mood.split('').reduce((a, b) => a + b.charCodeAt(0), 0)) % environments.length;
+  const index =
+    Math.abs(mood.split("").reduce((a, b) => a + b.charCodeAt(0), 0)) % environments.length;
   return environments[index];
 }
