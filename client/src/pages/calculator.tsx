@@ -104,10 +104,10 @@ export default function CalculatorPage() {
 
   return (
     <div className="min-h-screen bg-slate-50 p-4">
-      <div className="min-h-screen grid grid-cols-1 lg:grid-cols-2 gap-4">
+      <div className="h-[calc(100vh-2rem)] grid grid-cols-1 lg:grid-cols-2 gap-4">
         
         {/* Calculator Section - Left Half */}
-        <div className="flex">
+        <div className="flex pl-8">
           <Calculator 
             onCalculation={handleCalculation}
             isLoading={calculateMutation.isPending}
@@ -117,8 +117,8 @@ export default function CalculatorPage() {
         {/* Right Side Container - Split into top and bottom */}
         <div className="flex flex-col gap-4">
           
-          {/* AI Comment Box - Top Right Quarter */}
-          <div className="flex-1">
+          {/* AI Comment Box - Top Right - Shorter */}
+          <div className="h-[35%]">
             <AiCommentBox
               comments={comments}
               isTyping={calculateMutation.isPending}
@@ -128,8 +128,8 @@ export default function CalculatorPage() {
             />
           </div>
 
-          {/* Character Display - Bottom Right Quarter */}
-          <div className="flex-1">
+          {/* Character Display - Bottom Right - Taller */}
+          <div className="h-[65%]">
             <CharacterDisplay
               currentGif={currentGif}
               currentMood={currentMood}
