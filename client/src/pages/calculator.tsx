@@ -115,7 +115,7 @@ export default function CalculatorPage() {
         </div>
 
         {/* Right Side Container - Split into top and bottom */}
-        <div className="flex flex-col gap-4 pt-8 pb-8 pr-8">
+        <div className="flex flex-col gap-4 pr-8">
           
           {/* AI Comment Box - Top Right - Shorter */}
           <div className="h-[35%]">
