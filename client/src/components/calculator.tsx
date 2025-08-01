@@ -5,11 +5,12 @@ import { useCalculator } from "@/hooks/use-calculator";
 
 interface CalculatorProps {
   onCalculation: (expression: string) => void;
+  onNewInput?: () => void; // Called when user starts new input
   isLoading?: boolean;
   aiResult?: string; // AI's result to display
 }
 
-export function Calculator({ onCalculation, isLoading, aiResult }: CalculatorProps) {
+export function Calculator({ onCalculation, onNewInput, isLoading, aiResult }: CalculatorProps) {
   const { state, inputNumber, inputDecimal, clear, clearEntry, backspace, performOperation, performCalculation, getExpression } = useCalculator();
 
   const handleEquals = () => {
@@ -18,34 +19,49 @@ export function Calculator({ onCalculation, isLoading, aiResult }: CalculatorPro
     onCalculation(expression);
   };
 
+  const handleNumberInput = (num: string) => {
+    onNewInput?.(); // Clear AI result when new input starts
+    inputNumber(num);
+  };
+
+  const handleDecimalInput = () => {
+    onNewInput?.(); // Clear AI result when new input starts
+    inputDecimal();
+  };
+
+  const handleOperationInput = (op: string) => {
+    onNewInput?.(); // Clear AI result when new operation starts
+    performOperation(op);
+  };
+
   const buttons = [
     [
       { label: 'AC', onClick: clear, className: 'bg-slate-200 hover:bg-slate-300 text-slate-700' },
       { label: 'CE', onClick: clearEntry, className: 'bg-slate-200 hover:bg-slate-300 text-slate-700' },
       { label: '⌫', onClick: backspace, className: 'bg-slate-200 hover:bg-slate-300 text-slate-700' },
-      { label: '÷', onClick: () => performOperation('÷'), className: 'bg-blue-600 hover:bg-blue-700 text-white' },
+      { label: '÷', onClick: () => handleOperationInput('÷'), className: 'bg-blue-600 hover:bg-blue-700 text-white' },
     ],
     [
-      { label: '7', onClick: () => inputNumber('7'), className: 'bg-slate-100 hover:bg-slate-200 text-slate-800' },
-      { label: '8', onClick: () => inputNumber('8'), className: 'bg-slate-100 hover:bg-slate-200 text-slate-800' },
-      { label: '9', onClick: () => inputNumber('9'), className: 'bg-slate-100 hover:bg-slate-200 text-slate-800' },
-      { label: '×', onClick: () => performOperation('×'), className: 'bg-blue-600 hover:bg-blue-700 text-white' },
+      { label: '7', onClick: () => handleNumberInput('7'), className: 'bg-slate-100 hover:bg-slate-200 text-slate-800' },
+      { label: '8', onClick: () => handleNumberInput('8'), className: 'bg-slate-100 hover:bg-slate-200 text-slate-800' },
+      { label: '9', onClick: () => handleNumberInput('9'), className: 'bg-slate-100 hover:bg-slate-200 text-slate-800' },
+      { label: '×', onClick: () => handleOperationInput('×'), className: 'bg-blue-600 hover:bg-blue-700 text-white' },
     ],
     [
-      { label: '4', onClick: () => inputNumber('4'), className: 'bg-slate-100 hover:bg-slate-200 text-slate-800' },
-      { label: '5', onClick: () => inputNumber('5'), className: 'bg-slate-100 hover:bg-slate-200 text-slate-800' },
-      { label: '6', onClick: () => inputNumber('6'), className: 'bg-slate-100 hover:bg-slate-200 text-slate-800' },
-      { label: '−', onClick: () => performOperation('-'), className: 'bg-blue-600 hover:bg-blue-700 text-white' },
+      { label: '4', onClick: () => handleNumberInput('4'), className: 'bg-slate-100 hover:bg-slate-200 text-slate-800' },
+      { label: '5', onClick: () => handleNumberInput('5'), className: 'bg-slate-100 hover:bg-slate-200 text-slate-800' },
+      { label: '6', onClick: () => handleNumberInput('6'), className: 'bg-slate-100 hover:bg-slate-200 text-slate-800' },
+      { label: '−', onClick: () => handleOperationInput('-'), className: 'bg-blue-600 hover:bg-blue-700 text-white' },
     ],
     [
-      { label: '1', onClick: () => inputNumber('1'), className: 'bg-slate-100 hover:bg-slate-200 text-slate-800' },
-      { label: '2', onClick: () => inputNumber('2'), className: 'bg-slate-100 hover:bg-slate-200 text-slate-800' },
-      { label: '3', onClick: () => inputNumber('3'), className: 'bg-slate-100 hover:bg-slate-200 text-slate-800' },
-      { label: '+', onClick: () => performOperation('+'), className: 'bg-blue-600 hover:bg-blue-700 text-white' },
+      { label: '1', onClick: () => handleNumberInput('1'), className: 'bg-slate-100 hover:bg-slate-200 text-slate-800' },
+      { label: '2', onClick: () => handleNumberInput('2'), className: 'bg-slate-100 hover:bg-slate-200 text-slate-800' },
+      { label: '3', onClick: () => handleNumberInput('3'), className: 'bg-slate-100 hover:bg-slate-200 text-slate-800' },
+      { label: '+', onClick: () => handleOperationInput('+'), className: 'bg-blue-600 hover:bg-blue-700 text-white' },
     ],
     [
-      { label: '0', onClick: () => inputNumber('0'), className: 'bg-slate-100 hover:bg-slate-200 text-slate-800 col-span-2', span: 2 },
-      { label: '.', onClick: inputDecimal, className: 'bg-slate-100 hover:bg-slate-200 text-slate-800' },
+      { label: '0', onClick: () => handleNumberInput('0'), className: 'bg-slate-100 hover:bg-slate-200 text-slate-800 col-span-2', span: 2 },
+      { label: '.', onClick: handleDecimalInput, className: 'bg-slate-100 hover:bg-slate-200 text-slate-800' },
       { label: '=', onClick: handleEquals, className: 'bg-amber-500 hover:bg-amber-600 text-white' },
     ],
   ];

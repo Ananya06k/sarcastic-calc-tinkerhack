@@ -101,6 +101,11 @@ export default function CalculatorPage() {
     calculateMutation.mutate({ expression });
   };
 
+  const handleNewInput = () => {
+    // Clear AI result when user starts new input
+    setAiResult("");
+  };
+
   const responseCount = comments.length;
   const isBusy = calculateMutation.isPending;
   const isConnected = true; // You could add actual connection status checking
@@ -113,6 +118,7 @@ export default function CalculatorPage() {
         <div className="flex items-center justify-center p-8">
           <Calculator 
             onCalculation={handleCalculation}
+            onNewInput={handleNewInput}
             isLoading={calculateMutation.isPending}
             aiResult={aiResult}
           />
