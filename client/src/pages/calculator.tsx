@@ -115,30 +115,34 @@ export default function CalculatorPage() {
         </div>
 
         {/* Right Side Container - Split into top and bottom */}
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 pt-8 pb-8 pr-8">
           
           {/* AI Comment Box - Top Right - Shorter */}
           <div className="h-[35%]">
-            <AiCommentBox
-              comments={comments}
-              isTyping={calculateMutation.isPending}
-              currentMood={currentMood}
-              currentActivity={currentActivity}
-              isConnected={isConnected}
-            />
+            <div className="h-full max-h-[200px]">
+              <AiCommentBox
+                comments={comments}
+                isTyping={calculateMutation.isPending}
+                currentMood={currentMood}
+                currentActivity={currentActivity}
+                isConnected={isConnected}
+              />
+            </div>
           </div>
 
           {/* Character Display - Bottom Right - Taller */}
           <div className="h-[65%]">
-            <CharacterDisplay
-              currentGif={currentGif}
-              currentMood={currentMood}
-              isBusy={isBusy}
-              environment={currentEnvironment}
-              responseCount={responseCount}
-              speechBubbleText={speechBubbleText}
-              showSpeechBubble={showSpeechBubble}
-            />
+            <div className="h-full max-h-[350px]">
+              <CharacterDisplay
+                currentGif={currentGif}
+                currentMood={currentMood}
+                isBusy={isBusy}
+                environment={currentEnvironment}
+                responseCount={responseCount}
+                speechBubbleText={speechBubbleText}
+                showSpeechBubble={showSpeechBubble}
+              />
+            </div>
           </div>
         </div>
       </div>

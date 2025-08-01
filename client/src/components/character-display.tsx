@@ -46,10 +46,10 @@ export function CharacterDisplay({
 
   return (
     <Card className="bg-white rounded-2xl shadow-xl h-full flex flex-col">
-      <CardHeader className="pb-4">
+      <CardHeader className="pb-2 py-3">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-slate-800 flex items-center gap-2">
-            <Play className="text-blue-600" />
+          <h2 className="text-base font-semibold text-slate-800 flex items-center gap-2">
+            <Play className="text-blue-600 h-4 w-4" />
             AI Character
           </h2>
           <div className="flex items-center gap-2">
@@ -66,9 +66,9 @@ export function CharacterDisplay({
         </div>
       </CardHeader>
 
-      <CardContent className="flex-1 flex flex-col gap-4">
+      <CardContent className="flex-1 flex flex-col gap-3">
         {/* GIF Display Area */}
-        <div className="flex-1 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl relative overflow-hidden min-h-48 environment-transition">
+        <div className="flex-1 bg-gradient-to-br from-blue-50 to-indigo-100 rounded-xl relative overflow-hidden min-h-32 environment-transition">
           {/* Environment Background */}
           <div 
             className="absolute inset-0 bg-cover bg-center opacity-20 transition-all duration-500"
@@ -77,40 +77,40 @@ export function CharacterDisplay({
 
           {/* Character GIF Container */}
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="character-container w-32 h-32 bg-white rounded-full shadow-lg flex items-center justify-center relative overflow-hidden transition-transform duration-300 hover:scale-105">
+            <div className="character-container w-24 h-24 bg-white rounded-full shadow-lg flex items-center justify-center relative overflow-hidden transition-transform duration-300 hover:scale-105">
               {/* Character Display - Using emoji as placeholder for AI-generated GIFs */}
-              <div className="text-6xl animate-bounce-subtle">
+              <div className="text-4xl animate-bounce-subtle">
                 {currentGif}
               </div>
               
               {/* Character State Indicator */}
-              <div className={`absolute -top-2 -right-2 w-6 h-6 rounded-full border-2 border-white flex items-center justify-center ${
+              <div className={`absolute -top-1 -right-1 w-5 h-5 rounded-full border-2 border-white flex items-center justify-center ${
                 isBusy ? 'bg-red-500' : 'bg-green-500'
               }`}>
-                <Eye className="text-white text-xs h-3 w-3" />
+                <Eye className="text-white text-xs h-2 w-2" />
               </div>
             </div>
           </div>
 
           {/* Environment Info */}
-          <div className="absolute bottom-4 left-4 bg-white/80 backdrop-blur-sm rounded-lg px-3 py-2">
-            <div className="text-sm font-medium text-slate-700">{currentEnvironment.name}</div>
+          <div className="absolute bottom-2 left-2 bg-white/80 backdrop-blur-sm rounded-lg px-2 py-1">
+            <div className="text-xs font-medium text-slate-700">{currentEnvironment.name}</div>
             <div className="text-xs text-slate-500">{currentEnvironment.time}</div>
           </div>
 
           {/* Character Speech Bubble */}
           {showSpeechBubble && speechBubbleText && (
-            <div className="absolute top-4 right-4 bg-white rounded-lg p-3 shadow-lg max-w-32 animate-fade-in">
+            <div className="absolute top-2 right-2 bg-white rounded-lg p-2 shadow-lg max-w-24 animate-fade-in">
               <div className="text-xs text-slate-700">{speechBubbleText}</div>
-              <div className="absolute bottom-[-6px] left-4 w-3 h-3 bg-white transform rotate-45"></div>
+              <div className="absolute bottom-[-4px] left-2 w-2 h-2 bg-white transform rotate-45"></div>
             </div>
           )}
         </div>
 
         {/* Character Controls */}
-        <div className="flex items-center justify-between text-sm">
-          <div className="flex gap-2">
-            <span className={`px-2 py-1 rounded text-xs ${
+        <div className="flex items-center justify-between text-xs">
+          <div className="flex gap-1">
+            <span className={`px-1 py-1 rounded text-xs ${
               currentMood === 'Annoyed' ? 'bg-red-100 text-red-700' :
               currentMood === 'Sarcastic' ? 'bg-purple-100 text-purple-700' :
               currentMood === 'Bored' ? 'bg-gray-100 text-gray-700' :
@@ -119,14 +119,14 @@ export function CharacterDisplay({
             }`}>
               {currentMood}
             </span>
-            <span className={`px-2 py-1 rounded text-xs ${
+            <span className={`px-1 py-1 rounded text-xs ${
               isBusy ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700'
             }`}>
               {isBusy ? 'Busy' : 'Available'}
             </span>
           </div>
           <div className="text-slate-500">
-            <span className="font-medium">{responseCount}</span> responses today
+            <span className="font-medium">{responseCount}</span> responses
           </div>
         </div>
       </CardContent>

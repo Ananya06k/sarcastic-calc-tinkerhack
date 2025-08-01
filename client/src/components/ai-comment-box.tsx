@@ -35,10 +35,10 @@ export function AiCommentBox({
 
   return (
     <Card className="bg-white rounded-2xl shadow-xl h-full flex flex-col">
-      <CardHeader className="pb-4">
+      <CardHeader className="pb-2 py-3">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-slate-800 flex items-center gap-2">
-            <Bot className="text-blue-600" />
+          <h2 className="text-base font-semibold text-slate-800 flex items-center gap-2">
+            <Bot className="text-blue-600 h-4 w-4" />
             AI Comments
           </h2>
           <div className="flex items-center gap-2">
@@ -50,11 +50,11 @@ export function AiCommentBox({
         </div>
       </CardHeader>
 
-      <CardContent className="flex-1 flex flex-col gap-4">
+      <CardContent className="flex-1 flex flex-col gap-3">
         {/* Comment Display Area */}
         <div 
           ref={scrollRef}
-          className="flex-1 bg-slate-50 rounded-xl p-4 overflow-y-auto max-h-48 space-y-3"
+          className="flex-1 bg-slate-50 rounded-xl p-3 overflow-y-auto max-h-32 space-y-2"
         >
           {comments.length === 0 ? (
             <div className="flex items-center justify-center h-full text-slate-400">
@@ -101,8 +101,8 @@ export function AiCommentBox({
         </div>
 
         {/* AI Status Bar */}
-        <div className="p-3 bg-slate-100 rounded-lg">
-          <div className="flex items-center justify-between text-sm">
+        <div className="p-2 bg-slate-100 rounded-lg">
+          <div className="flex items-center justify-between text-xs">
             <span className="text-slate-600">
               Mood: <span className="font-medium text-slate-800">{currentMood}</span>
             </span>
