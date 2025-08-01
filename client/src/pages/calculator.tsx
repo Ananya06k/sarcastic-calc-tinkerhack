@@ -103,7 +103,7 @@ export default function CalculatorPage() {
   const isConnected = true; // You could add actual connection status checking
 
   return (
-    <div className="min-h-screen bg-slate-50 p-4">
+    <div className="min-h-screen bg-slate-50 p-4 pt-[0px] pb-[0px] pl-[0px] pr-[0px]">
       <div className="h-[calc(100vh-2rem)] grid grid-cols-1 lg:grid-cols-2 gap-4">
         
         {/* Calculator Section - Left Half */}
