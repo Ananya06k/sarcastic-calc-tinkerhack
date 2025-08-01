@@ -131,7 +131,7 @@ export default function CalculatorPage() {
           </div>
 
           {/* Character Display - Bottom Right - Taller */}
-          <div className="h-[65%]">
+          <div className="h-[65%] pt-[80px] pb-[80px] pl-[-87px] pr-[-87px]">
             <div className="h-full max-h-[350px]">
               <CharacterDisplay
                 currentGif={currentGif}
@@ -146,7 +146,6 @@ export default function CalculatorPage() {
           </div>
         </div>
       </div>
-
       {/* Loading Overlay */}
       {calculateMutation.isPending && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
