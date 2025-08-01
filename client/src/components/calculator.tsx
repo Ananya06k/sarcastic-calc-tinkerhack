@@ -53,27 +53,27 @@ export function Calculator({ onCalculation, isLoading, aiResult }: CalculatorPro
   const previousOperation = state.previousValue && state.operation ? `${state.previousValue} ${state.operation}` : '';
 
   return (
-    <Card className="bg-white rounded-2xl shadow-xl h-full flex flex-col max-h-[700px] w-full max-w-md">
+    <Card className="bg-slate-900 rounded-2xl shadow-xl h-full flex flex-col max-h-[700px] w-full max-w-md border border-slate-700">
       <CardHeader className="pb-2 py-4">
         <div className="flex items-center justify-between">
-          <h1 className="text-xl font-bold text-slate-800 flex items-center gap-2">
-            <CalculatorIcon className="text-blue-600" />
+          <h1 className="text-xl font-bold text-slate-200 flex items-center gap-2">
+            <CalculatorIcon className="text-blue-400" />
             Sarcastic Calculator
           </h1>
-          <Button variant="ghost" size="sm" className="p-2">
-            <History className="h-4 w-4 text-slate-600" />
+          <Button variant="ghost" size="sm" className="p-2 hover:bg-slate-800">
+            <History className="h-4 w-4 text-slate-400" />
           </Button>
         </div>
       </CardHeader>
 
       <CardContent className="flex-1 flex flex-col gap-5">
         {/* Display */}
-        <div className="bg-slate-900 rounded-xl p-5">
+        <div className="bg-slate-100 rounded-xl p-5 border border-slate-300">
           <div className="text-right">
-            <div className="text-slate-400 text-sm font-mono mb-1 min-h-5">
+            <div className="text-slate-600 text-sm font-mono mb-1 min-h-5">
               {previousOperation}
             </div>
-            <div className="text-white text-4xl font-mono break-all">
+            <div className="text-slate-900 text-4xl font-mono break-all">
               {aiResult || state.display}
             </div>
           </div>
