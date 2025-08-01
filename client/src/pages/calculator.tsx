@@ -145,7 +145,7 @@ export default function CalculatorPage() {
           </div>
 
           {/* Character Display - Bottom Right */}
-          <div className="flex-[0.8] pt-[15px] pb-[15px] -mt-[40px] mb-[7px]">
+          <div className="flex-[0.8] pt-[15px] pb-[45px] -mt-[40px] mb-[7px]">
             <CharacterDisplay
               currentGif={currentGif}
               currentMood={currentMood}
