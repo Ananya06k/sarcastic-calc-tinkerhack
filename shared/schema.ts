@@ -21,6 +21,7 @@ export const aiResponses = pgTable("ai_responses", {
   calculationId: varchar("calculation_id").references(() => calculations.id),
   response: text("response").notNull(),
   emotion: text("emotion").notNull(),
+  aiResult: text("ai_result").notNull(), // AI's answer to the calculation
   timestamp: timestamp("timestamp").defaultNow().notNull(),
 });
 
@@ -38,6 +39,7 @@ export const insertAiResponseSchema = createInsertSchema(aiResponses).pick({
   calculationId: true,
   response: true,
   emotion: true,
+  aiResult: true,
 });
 
 export type InsertUser = z.infer<typeof insertUserSchema>;

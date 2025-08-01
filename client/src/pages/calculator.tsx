@@ -28,6 +28,7 @@ interface CalculationResponse {
     mood: string;
     activity: string;
     gif: string;
+    aiResult: string;
     environment: {
       name: string;
       time: string;
@@ -48,6 +49,7 @@ export default function CalculatorPage() {
   });
   const [speechBubbleText, setSpeechBubbleText] = useState("");
   const [showSpeechBubble, setShowSpeechBubble] = useState(false);
+  const [aiResult, setAiResult] = useState<string>("");
   const { toast } = useToast();
 
   // Get calculation history
@@ -57,8 +59,8 @@ export default function CalculatorPage() {
 
   // Calculate mutation
   const calculateMutation = useMutation({
-    mutationFn: async ({ expression, result }: { expression: string; result: string }) => {
-      const response = await apiRequest('POST', '/api/calculate', { expression, result });
+    mutationFn: async ({ expression }: { expression: string }) => {
+      const response = await apiRequest('POST', '/api/calculate', { expression });
       return response.json() as Promise<CalculationResponse>;
     },
     onSuccess: (data) => {
@@ -75,6 +77,7 @@ export default function CalculatorPage() {
       setCurrentActivity(data.aiResponse.activity);
       setCurrentGif(data.aiResponse.gif);
       setCurrentEnvironment(data.aiResponse.environment);
+      setAiResult(data.aiResponse.aiResult); // Set AI's result for display
       
       // Show speech bubble temporarily
       setSpeechBubbleText("*calculating sarcasm*");
@@ -90,12 +93,12 @@ export default function CalculatorPage() {
     },
   });
 
-  const handleCalculation = (expression: string, result: string) => {
+  const handleCalculation = (expression: string) => {
     // Show immediate feedback
     setSpeechBubbleText("*sigh*");
     setShowSpeechBubble(true);
     
-    calculateMutation.mutate({ expression, result });
+    calculateMutation.mutate({ expression });
   };
 
   const responseCount = comments.length;
@@ -111,6 +114,7 @@ export default function CalculatorPage() {
           <Calculator 
             onCalculation={handleCalculation}
             isLoading={calculateMutation.isPending}
+            aiResult={aiResult}
           />
         </div>
 

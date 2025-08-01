@@ -9,10 +9,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Calculate and get AI response
   app.post("/api/calculate", async (req, res) => {
     try {
-      const { expression, result } = insertCalculationSchema.parse(req.body);
+      const { expression } = req.body;
       
-      // Save calculation
-      const calculation = await storage.createCalculation({ expression, result });
+      if (!expression) {
+        return res.status(400).json({ message: "Expression is required" });
+      }
       
       // Get recent calculations for context
       const recentCalculations = await storage.getRecentCalculations(5);
@@ -21,14 +22,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
         result: c.result
       }));
       
-      // Generate AI response
-      const aiResponse = await generateSarcasticResponse(expression, result, calculationHistory);
+      // Generate AI response (including AI's result)
+      const aiResponse = await generateSarcasticResponse(expression, "", calculationHistory);
+      
+      // Save calculation with AI's result
+      const calculation = await storage.createCalculation({ 
+        expression, 
+        result: aiResponse.aiResult 
+      });
       
       // Save AI response
       const savedResponse = await storage.createAiResponse({
         calculationId: calculation.id,
         response: aiResponse.response,
-        emotion: aiResponse.emotion
+        emotion: aiResponse.emotion,
+        aiResult: aiResponse.aiResult
       });
 
       // Get appropriate GIF and environment

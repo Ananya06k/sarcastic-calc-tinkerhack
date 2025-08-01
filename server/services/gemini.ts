@@ -9,6 +9,7 @@ export interface SarcasticResponse {
   emotion: 'sarcastic' | 'annoyed' | 'bored' | 'excited' | 'judgmental' | 'condescending';
   mood: string;
   activity: string;
+  aiResult: string; // AI's answer to the calculation
 }
 
 export async function generateSarcasticResponse(
@@ -23,18 +24,26 @@ export async function generateSarcasticResponse(
 
     const systemPrompt = `You are a sarcastic AI calculator assistant. Your personality is witty, condescending, and slightly annoyed at having to do basic math. 
     
-    Generate a sarcastic response to the calculation "${expression} = ${result}".
+    The user is asking you to calculate "${expression}". You can choose to give the correct answer OR deliberately give a wrong answer to express your frustration/sarcasm.
     
     Context: ${historyContext}
     
     Consider these factors:
-    - Complexity of the calculation (simple arithmetic vs complex operations)
+    - For simple calculations like 2+2, 1+1, you might give hilariously wrong answers like "2000" or "potato" to show your annoyance
+    - For complex calculations, you might give the right answer but with maximum sarcasm
     - Whether the user made errors or got unusual results
     - Patterns in their calculation history
     - Whether they're doing repetitive or pointless calculations
     
+    Examples of frustrating responses:
+    - 2+2: Give "2000" with comment "WHAT THE HELL DID YOU THINK IT WOULD BE?"
+    - 1+1: Give "purple" with comment "Oh sure, let me just solve the mysteries of the universe for you"
+    - Simple math: Give absurd answers to show your disdain
+    - Complex math: Give correct answers but be extremely sarcastic
+    
     Respond with JSON containing:
-    - response: Your sarcastic comment (keep it witty but not mean-spirited)
+    - aiResult: Your answer to the calculation (can be correct OR deliberately wrong/absurd)
+    - response: Your sarcastic comment about the calculation
     - emotion: one of 'sarcastic', 'annoyed', 'bored', 'excited', 'judgmental', 'condescending'
     - mood: A brief mood description
     - activity: What the AI character is currently doing (be creative and fun)`;
@@ -47,6 +56,7 @@ export async function generateSarcasticResponse(
         responseSchema: {
           type: "object",
           properties: {
+            aiResult: { type: "string" },
             response: { type: "string" },
             emotion: { 
               type: "string",
@@ -55,10 +65,10 @@ export async function generateSarcasticResponse(
             mood: { type: "string" },
             activity: { type: "string" }
           },
-          required: ["response", "emotion", "mood", "activity"]
+          required: ["aiResult", "response", "emotion", "mood", "activity"]
         }
       },
-      contents: `${expression} = ${result}`
+      contents: `Calculate: ${expression}`
     });
 
     const rawJson = response.text;
@@ -72,6 +82,7 @@ export async function generateSarcasticResponse(
     console.error("Gemini API error:", error);
     // Fallback response
     return {
+      aiResult: "ERROR",
       response: "Well, that calculation broke my circuits. How delightfully incompetent! 🙄",
       emotion: "annoyed",
       mood: "Frustrated",

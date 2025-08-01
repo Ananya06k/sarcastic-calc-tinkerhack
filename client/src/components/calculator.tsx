@@ -4,20 +4,18 @@ import { Calculator as CalculatorIcon, History } from "lucide-react";
 import { useCalculator } from "@/hooks/use-calculator";
 
 interface CalculatorProps {
-  onCalculation: (expression: string, result: string) => void;
+  onCalculation: (expression: string) => void;
   isLoading?: boolean;
+  aiResult?: string; // AI's result to display
 }
 
-export function Calculator({ onCalculation, isLoading }: CalculatorProps) {
+export function Calculator({ onCalculation, isLoading, aiResult }: CalculatorProps) {
   const { state, inputNumber, inputDecimal, clear, clearEntry, backspace, performOperation, performCalculation, getExpression } = useCalculator();
 
   const handleEquals = () => {
     const expression = getExpression();
-    performCalculation();
-    // Wait for state update, then trigger calculation
-    setTimeout(() => {
-      onCalculation(expression, state.display);
-    }, 0);
+    // Send expression directly to AI, don't perform mathematical calculation
+    onCalculation(expression);
   };
 
   const buttons = [
@@ -76,7 +74,7 @@ export function Calculator({ onCalculation, isLoading }: CalculatorProps) {
               {previousOperation}
             </div>
             <div className="text-white text-4xl font-mono break-all">
-              {state.display}
+              {aiResult || state.display}
             </div>
           </div>
         </div>
