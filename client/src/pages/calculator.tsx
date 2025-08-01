@@ -118,7 +118,7 @@ export default function CalculatorPage() {
         <div className="flex flex-col pr-8 h-full">
           
           {/* AI Comment Box - Top Right */}
-          <div className="flex-1 mb-4">
+          <div className="flex-1 pt-8 mb-2">
             <AiCommentBox
               comments={comments}
               isTyping={calculateMutation.isPending}
