@@ -54,7 +54,7 @@ export function AiCommentBox({
         {/* Comment Display Area */}
         <div 
           ref={scrollRef}
-          className="bg-slate-50 rounded-xl p-2 overflow-y-auto max-h-20 space-y-1"
+          className="bg-slate-50 rounded-xl p-2 overflow-y-auto max-h-32 space-y-1"
         >
           {comments.length === 0 ? (
             <div className="flex items-center justify-center h-full text-slate-400">
