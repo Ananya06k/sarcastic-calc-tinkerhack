@@ -105,7 +105,7 @@ For Hardware:
 
 ### Project Demo
 # Video
-[Add your demo video link here]
+[[Add your demo video link here]](https://github.com/Ananya06k/sarcastic-calc-tinkerhack/blob/main/2025-08-02%2007-58-03.mkv)s
 *Explain what the video demonstrates*
 
 # Additional Demos
